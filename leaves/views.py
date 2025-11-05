@@ -11,6 +11,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 from .filters import HolidayCustomFilter, LeaveRequestCustomFilter, TeamLeaveTrackerCustomFilter
 from drf_spectacular.utils import extend_schema
 from rest_framework.decorators import action
+from .pagination import CustomPagination
 
 class RegisterView(mixins.CreateModelMixin, viewsets.GenericViewSet):
     # permission_classes = [IsAdminUser]
@@ -135,8 +136,10 @@ class TeamMembersLeaveTrackerView(mixins.ListModelMixin, viewsets.GenericViewSet
 class TeamMembersLeavesView(mixins.ListModelMixin, viewsets.GenericViewSet):
     permission_classes = [IsAuthenticated] # same
     serializer_class = LeaveRequestSerializer
-    filter_backends = [filters.SearchFilter]
+    filter_backends = [filters.SearchFilter, filters.OrderingFilter]
     search_fields = ['status']
+    ordering = ['-id']
+    pagination_class = CustomPagination
 
     def get_queryset(self):
         user = self.request.user
