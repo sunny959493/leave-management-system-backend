@@ -15,7 +15,6 @@ router.register('teamMembers', TeamMembersView, basename='team-members')
 router.register('teamMembersLeaveTracker', TeamMembersLeaveTrackerView, basename='team-leave-trackers')
 router.register('teamMembersLeaves', TeamMembersLeavesView, basename='team-members-leaves')
 router.register('login', LoginView, basename="login") #---> gives access & refresh tokens after login
-# router.register('leaveApprove', LeaveApproveView, basename='leave-approve') #--> it is not expecting pk for create
 
 urlpatterns = [
     path('', include(router.urls)),
