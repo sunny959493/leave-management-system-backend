@@ -16,17 +16,6 @@ class RegisterView(mixins.CreateModelMixin, viewsets.GenericViewSet):
     # permission_classes = [IsAdminUser]
     serializer_class = RegisterSerializer
 
-# class LoginView(APIView):
-    # @extend_schema(
-    #         request=LoginSerializer,
-    #         responses=LoginSerializer, 
-    #         description="login schema"
-    # )
-#     def post(self, request): # change this to other name according to use case
-#         serializer = LoginSerializer(data = request.data)
-#         serializer.is_valid(raise_exception=True)
-#         return Response(serializer.data, status=status.HTTP_200_OK)
-
 class LoginView(viewsets.ViewSet):
     @extend_schema(
             request=LoginSerializer,
