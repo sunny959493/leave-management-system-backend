@@ -44,6 +44,7 @@ class HolidayView(
     ordering = ['date'] #-->default ordering
 
     def get_permissions(self):
+        # breakpoint()
         if self.action in ['create','update','destroy']:
             self.permission_classes=[IsAdminUser]
         else:

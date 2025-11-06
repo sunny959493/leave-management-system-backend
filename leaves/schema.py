@@ -199,9 +199,8 @@ class HolidayMutation(graphene.Mutation):
         name = graphene.String(required = True)
         date = graphene.Date(required = True)
 
-    @permission_required(IsAuthenticated)
+    @permission_required(IsAdmin)
     def mutate(self, info, name, date):
-        user = info.context.user
         if Holiday.objects.filter(name=name).exists():
             raise GraphQLError("name already exists")
         holiday = Holiday.objects.create(name=name, date=date)
