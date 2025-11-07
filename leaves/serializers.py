@@ -10,9 +10,12 @@ class HolidaySerializer(serializers.ModelSerializer):
         fields = ['name', 'date']
 
     def validate_date(self, date):
-        if Holiday.objects.filter(date=date).exists():
-            raise serializers.ValidationError("A holiday is already created on this date")
-        return date
+        # breakpoint()
+        try:
+            holiday = Holiday.objects.get(date=date)
+        except:
+            return date
+        raise serializers.ValidationError("A holiday is already created on this date")
     
     
 class LoginSerializer(serializers.ModelSerializer):
