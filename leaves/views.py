@@ -83,12 +83,7 @@ class LeaveApproveView(mixins.CreateModelMixin, viewsets.GenericViewSet):
         for member in team_members:
             team_members_id.append(member.id)
         return LeaveRequest.objects.filter(user__in = team_members_id)
-
-    @extend_schema(
-            request=LeaveApproveSerializer,
-            responses=LeaveApproveSerializer,
-            description="reporing manager reviewing the leave request"
-    )
+    
     def create(self, request, **kwargs):
         pk = kwargs.get('pk')
         # breakpoint()
