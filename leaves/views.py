@@ -61,7 +61,7 @@ class LeaveTrackerView(mixins.ListModelMixin, viewsets.GenericViewSet):
 
     
 class LeaveRequestView(mixins.ListModelMixin, mixins.CreateModelMixin, viewsets.GenericViewSet):
-    permission_classes = [IsAuthenticated] # same this applies here @permission classes line in LeaveTrackerView
+    permission_classes = [IsAuthenticated] # same thing applies here @permission classes line in LeaveTrackerView
     serializer_class = LeaveRequestSerializer
     filter_backends = [DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     search_fields = ['reason']
@@ -86,6 +86,7 @@ class LeaveApproveView(mixins.CreateModelMixin, viewsets.GenericViewSet):
 
     @extend_schema(
             request=LeaveApproveSerializer,
+            responses=LeaveApproveSerializer,
             description="reporing manager reviewing the leave request"
     )
     def create(self, request, **kwargs):
@@ -95,7 +96,7 @@ class LeaveApproveView(mixins.CreateModelMixin, viewsets.GenericViewSet):
         serializer.is_valid(raise_exception=True)
         action = serializer.validated_data.get('action')
         leave_request = self.get_object()
-        
+        # breakpoint()
         if action=='approve':
             leave_tracker = LeaveTracker.objects.get(user = leave_request.user)
             leave_request.status = 'approved'
@@ -106,7 +107,9 @@ class LeaveApproveView(mixins.CreateModelMixin, viewsets.GenericViewSet):
             leave_request.status = 'rejected'
             leave_request.reviewed_by = request.user.username
         leave_request.save()
-        return Response({'status': leave_request.status})
+
+        output_serializer = self.get_serializer(leave_request) #-->will serialize the leave request instance to get status as output
+        return Response(output_serializer.data, status=status.HTTP_200_OK)
     
 
 class TeamMembersView(mixins.ListModelMixin, viewsets.GenericViewSet):

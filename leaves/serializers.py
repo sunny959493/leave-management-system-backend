@@ -79,6 +79,7 @@ class LeaveRequestSerializer(serializers.ModelSerializer):
         return value
 
     def validate(self, data):
+        # breakpoint()
         leave_requests = LeaveRequest.objects.filter(user = self.context.get('request').user, status__in = ['approved', 'pending'])
         for leave in leave_requests:
             if leave.start_date <= data['start_date'] <=leave.end_date:
@@ -110,8 +111,13 @@ class UserSerializer(serializers.ModelSerializer):
         model = CustomUser
         fields = ['id', 'username', 'reporting_manager']
 
-class LeaveApproveSerializer(serializers.Serializer):
-    action = serializers.ChoiceField(choices=['approve', 'reject'])
+class LeaveApproveSerializer(serializers.ModelSerializer):
+    action = serializers.ChoiceField(choices=['approve', 'reject'], write_only=True)
+    
+    class Meta:
+        model = LeaveRequest
+        fields = ['status', 'action']
+        read_only_fields = ['status']
 
     def validate(self, data):
         pk = self.context.get('pk')
