@@ -10,7 +10,7 @@ from datetime import date
 from graphql_jwt.refresh_token.models import RefreshToken
 from .permissions import permission_required, IsAdmin, IsAuthenticated
 
-class HolidayType(DjangoObjectType):
+class HolidayType(DjangoObjectType): #converts django models to GraphQl type
     class Meta:
         model = Holiday
         fields = ['name', 'date']
