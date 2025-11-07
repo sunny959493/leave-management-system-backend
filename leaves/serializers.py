@@ -7,8 +7,13 @@ from datetime import date
 class HolidaySerializer(serializers.ModelSerializer):
     class Meta:
         model = Holiday
-        fields = '__all__'
+        fields = ['name', 'date']
 
+    def validate_date(self, date):
+        if Holiday.objects.filter(date=date).exists():
+            raise serializers.ValidationError("A holiday is already created on this date")
+        return date
+    
     
 class LoginSerializer(serializers.ModelSerializer):
     username = serializers.CharField(required=True)
@@ -48,10 +53,10 @@ class RegisterSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("passwords must match")
         return data
     
-    def validate_reporting_manager(self, value):
-        if not CustomUser.objects.filter(id = value.id): #checking by object's value
+    def validate_reporting_manager(self, reporting_manager):
+        if not CustomUser.objects.filter(id = reporting_manager.id): #checking by object's value
             raise serializers.ValidationError("reporting manager does not exist")
-        return value
+        return reporting_manager
     
     def create(self, validated_data):
         username = validated_data['username']
@@ -72,11 +77,11 @@ class LeaveRequestSerializer(serializers.ModelSerializer):
         fields = '__all__'
         read_only_fields = ['user', 'status', 'days', 'applied_at', 'reviewed_by',]
     
-    def validate_start_date(self, value):
+    def validate_start_date(self, start_date):
         today = date.today()
-        if value < today:
+        if start_date < today:
             raise serializers.ValidationError("start date cannot be before todays date")
-        return value
+        return start_date
 
     def validate(self, data):
         # breakpoint()
