@@ -28,7 +28,7 @@ class LeaveRequest(models.Model):
         ('approved', 'approved'),
         ('rejected', 'rejected')
     ]
-    status = models.CharField(max_length=20, choices=status_choices, default='pending') # know the diff of passing choices as choices and directly using choiceField
+    status = models.CharField(max_length=20, choices=status_choices, default='pending')
     applied_at = models.DateTimeField(auto_now_add=True)
     reviewed_by = models.CharField(max_length=150, null=True, blank=True)
     days = models.IntegerField(null=True, blank=True)
