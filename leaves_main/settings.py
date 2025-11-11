@@ -44,10 +44,12 @@ INSTALLED_APPS = [
     'graphql_jwt',
     'graphql_jwt.refresh_token',
     'django_filters',
-    'drf_spectacular'
+    'drf_spectacular',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -172,3 +174,7 @@ GRAPHQL_JWT = {
     "JWT_REFRESH_TOKEN_BLACKLIST": True,   # old refresh tokens are blacklisted
     "JWT_VERIFY_EXPIRATION": True,
 }
+
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:5173"
+]
