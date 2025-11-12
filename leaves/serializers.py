@@ -140,6 +140,12 @@ class LeaveApproveSerializer(serializers.ModelSerializer):
         if leave_request.status in ['approved', 'rejected']:
             raise serializers.ValidationError("the leave request is already reviewed") #-->checking if that leave request is not reviewed already 
         
+        ManagerleaveRequests = LeaveRequest.objects.filter(user=leave_request.user.reporting_manager, status='approved') #--> if reporting manager is on leave, his reporting manager can approve leave
+        for leaves in ManagerleaveRequests:
+            if leaves.start_date <= date.today() <=leaves.end_date:
+                reporting_manager = leaves.user.reporting_manager
+                break
+
         if reporting_manager != user:
             raise serializers.ValidationError("you are not the reporting manager of this leave request")  #--> checking logged in user is reporting manager of that leave request
     
