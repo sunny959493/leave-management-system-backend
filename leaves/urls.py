@@ -1,7 +1,7 @@
 from django.urls import path, include
 from .views import (
     HolidayView, LoginView, RegisterView, LeaveTrackerView, LeaveRequestView,
-    LeaveApproveView, TeamMembersView, TeamMembersLeaveTrackerView, TeamMembersLeavesView
+    LeaveApproveView, TeamMembersView, TeamMembersLeaveTrackerView, TeamMembersLeavesView,
     )
 from rest_framework_simplejwt.views import TokenRefreshView
 
@@ -20,5 +20,5 @@ urlpatterns = [
     path('', include(router.urls)),
     # path('login/', LoginView.as_view(), name='login'), #---> gives access & refresh tokens after login
     path('refresh/', TokenRefreshView.as_view(), name='token_refresh'), #---> takes refresh, returns new access when refresh is valid
-    path('leaveApprove/<int:pk>/', LeaveApproveView.as_view({'post': 'create'}), name='leave_approve')
+    path('leaveApprove/<int:pk>/', LeaveApproveView.as_view({'post': 'create'}), name='leave_approve'),
 ]
