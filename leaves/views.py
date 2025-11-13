@@ -23,7 +23,7 @@ class LoginView(viewsets.ViewSet):
             responses=LoginSerializer, 
             description="login schema"
     )
-    @action(detail=False, methods=["post"])
+    @action(methods=["post"], detail=False,)
     def get_tokens(self, request):
         serializer = LoginSerializer(data = request.data)
         serializer.is_valid(raise_exception=True)
@@ -107,7 +107,7 @@ class LeaveApproveView(mixins.CreateModelMixin, viewsets.GenericViewSet):
         return Response(output_serializer.data, status=status.HTTP_200_OK)
     
 
-class TeamMembersView(mixins.ListModelMixin, viewsets.GenericViewSet):
+class TeamMembersView(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets.GenericViewSet):
     permission_classes = [IsAuthenticated] # same here 
     serializer_class = UserSerializer
 
@@ -132,7 +132,7 @@ class TeamMembersLeaveTrackerView(mixins.ListModelMixin, viewsets.GenericViewSet
             team_members_ids.append(member.id)
         return LeaveTracker.objects.filter(user__in = team_members_ids)
     
-class TeamMembersLeavesView(mixins.ListModelMixin, viewsets.GenericViewSet):
+class TeamMembersLeavesView(mixins.ListModelMixin, mixins.RetrieveModelMixin,viewsets.GenericViewSet):
     permission_classes = [IsAuthenticated] # same
     serializer_class = LeaveRequestSerializer
     filter_backends = [filters.SearchFilter, filters.OrderingFilter]
@@ -141,10 +141,30 @@ class TeamMembersLeavesView(mixins.ListModelMixin, viewsets.GenericViewSet):
     pagination_class = CustomPagination
 
     def get_queryset(self):
-        user = self.request.user
+        # breakpoint()
+        user = self.request.user #--->reporting manager user
         team_members = user.team_members.all()
         team_members_id = []
         for member in team_members:
             team_members_id.append(member.id)
+        user_id = int(self.kwargs.get('user_pk')) #--->team member user_id
+        if user_id:
+            if user_id in team_members_id:
+                return LeaveRequest.objects.filter(user_id = user_id)
+            else:
+                # breakpoint()
+                return None
         return LeaveRequest.objects.filter(user__in = team_members_id)
     
+    # def get_objects(self):
+    #     # breakpoint()
+    #     user_id = self.kwargs.get('user_id')
+    #     queryset = self.get_queryset()
+    #     return queryset.filter(user=user_id)
+    
+    # def retrieve(self, request, user_id=None):
+    #     instances = self.get_objects()
+    #     page = self.paginate_queryset(instances)
+    #     # breakpoint()
+    #     serializer = self.get_serializer(page, many=True)
+    #     return self.get_paginated_response(serializer.data)
