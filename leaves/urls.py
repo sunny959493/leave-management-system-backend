@@ -23,7 +23,7 @@ teamMembersLeaves_router = NestedDefaultRouter(teamMembers_router, 'leaveRequest
 teamMembersLeaves_router.register('leaveApprove', LeaveApproveView, basename='leave-approve')
 
 urlpatterns = [
-    path('refresh/', TokenRefreshView.as_view(), name='token-refresh'), #---> takes refresh, returns new access when refresh is valid
+    path('refresh/', TokenRefreshView.as_view(), name='token-refresh'), #---> takes refresh, returns new access when refresh is valid. It is normal APIView so, that why it is not in routers.
     path('', include(router.urls)),
     path('', include(teamMembers_router.urls)),
     path('', include(teamMembersLeaves_router.urls))

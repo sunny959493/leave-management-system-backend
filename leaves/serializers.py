@@ -115,11 +115,11 @@ class LeaveRequestSerializer(serializers.ModelSerializer):
         return leave
     
 class UserSerializer(serializers.ModelSerializer):
-    leaves = LeaveRequestSerializer(many=True, read_only = True)
+    # leave_requests = LeaveRequestSerializer(many=True, read_only = True)
 
     class Meta:
         model = CustomUser
-        fields = ['id', 'username', 'reporting_manager', 'leaves']
+        fields = ['id', 'username', 'reporting_manager',]
 
 class LeaveApproveSerializer(serializers.ModelSerializer):
     action = serializers.ChoiceField(choices=['approve', 'reject'], write_only=True)
