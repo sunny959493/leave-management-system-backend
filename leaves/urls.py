@@ -19,9 +19,12 @@ router.register('login', LoginView, basename="login") #---> gives access & refre
 teamMembers_router = NestedDefaultRouter(router, 'teamMembers', lookup = 'user')
 teamMembers_router.register('leaveRequests', TeamMembersLeavesView, basename='team-members-leaves')
 
+teamMembersLeaves_router = NestedDefaultRouter(teamMembers_router, 'leaveRequests', lookup = 'leave')
+teamMembersLeaves_router.register('leaveApprove', LeaveApproveView, basename='leave-approve')
+
 urlpatterns = [
-    path('refresh/', TokenRefreshView.as_view(), name='token_refresh'), #---> takes refresh, returns new access when refresh is valid
-    path('leaveApprove/<int:pk>/', LeaveApproveView.as_view({'post': 'create'}), name='leave_approve'),
+    path('refresh/', TokenRefreshView.as_view(), name='token-refresh'), #---> takes refresh, returns new access when refresh is valid
     path('', include(router.urls)),
-    path('', include(teamMembers_router.urls))
+    path('', include(teamMembers_router.urls)),
+    path('', include(teamMembersLeaves_router.urls))
 ]

@@ -77,18 +77,25 @@ class LeaveApproveView(mixins.CreateModelMixin, viewsets.GenericViewSet):
     serializer_class = LeaveApproveSerializer
 
     def get_queryset(self):
-        user = self.request.user
+        user = self.request.user #--> reporting manager user
         team_members = user.team_members.all()
         team_members_id = []
         for member in team_members:
             team_members_id.append(member.id)
         return LeaveRequest.objects.filter(user__in = team_members_id)
     
+    def get_object(self):
+        leave_id = self.kwargs.get('leave_pk')
+        queryset = self.get_queryset()
+        return queryset.get(id = leave_id)
+    
     def create(self, request, **kwargs):
-        pk = kwargs.get('pk')
+        # breakpoint()
+        pk = kwargs.get('leave_pk')
         # breakpoint()
         serializer = self.get_serializer(data=request.data, context={"pk":pk, "request":request})
         serializer.is_valid(raise_exception=True)
+        # breakpoint()
         action = serializer.validated_data.get('action')
         leave_request = self.get_object()
         # breakpoint()
