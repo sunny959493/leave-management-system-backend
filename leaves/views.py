@@ -169,16 +169,3 @@ class TeamMembersLeavesView(mixins.ListModelMixin, mixins.RetrieveModelMixin,vie
             return Response({"message": "The entered user is not in your team or The user dont have any leave history"})
         
         return super().list(self, request, *args, **kwargs)
-    
-    # def get_objects(self):
-    #     # breakpoint()
-    #     user_id = self.kwargs.get('user_id')
-    #     queryset = self.get_queryset()
-    #     return queryset.filter(user=user_id)
-    
-    # def retrieve(self, request, user_id=None):
-    #     instances = self.get_objects()
-    #     page = self.paginate_queryset(instances)
-    #     # breakpoint()
-    #     serializer = self.get_serializer(page, many=True)
-    #     return self.get_paginated_response(serializer.data)
