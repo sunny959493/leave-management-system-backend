@@ -168,4 +168,4 @@ class TeamMembersLeavesView(mixins.ListModelMixin, mixins.RetrieveModelMixin,vie
         if queryset.count() == 0:
             return Response({"message": "The entered user is not in your team or The user dont have any leave history"})
         
-        return super().list(self, request, *args, **kwargs)
+        return super().list(request, *args, **kwargs)
