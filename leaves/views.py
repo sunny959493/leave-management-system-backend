@@ -149,15 +149,15 @@ class TeamMembersLeavesView(mixins.ListModelMixin, mixins.RetrieveModelMixin,vie
 
     def get_queryset(self):
         # breakpoint()
-        user = self.request.user #--->reporting manager user
+        user = self.request.user
         team_members = user.team_members.all()
         team_members_id = []
         for member in team_members:
             team_members_id.append(member.id)
-        user_id = int(self.kwargs.get('user_pk')) #--->team member user_id
-        if user_id:
-            if user_id in team_members_id:
-                return LeaveRequest.objects.filter(user_id = user_id)
+        team_member_user_id = int(self.kwargs.get('user_pk')) #--->team member user_id
+        if team_member_user_id:
+            if team_member_user_id in team_members_id:
+                return LeaveRequest.objects.filter(user_id = team_member_user_id)
             else:
                 # breakpoint()
                 return LeaveRequest.objects.none()
