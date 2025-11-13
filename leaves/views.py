@@ -153,8 +153,15 @@ class TeamMembersLeavesView(mixins.ListModelMixin, mixins.RetrieveModelMixin,vie
                 return LeaveRequest.objects.filter(user_id = user_id)
             else:
                 # breakpoint()
-                return None
+                return LeaveRequest.objects.none()
         return LeaveRequest.objects.filter(user__in = team_members_id)
+    
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        if queryset.count() == 0:
+            return Response({"message": "The entered user is not in your team or The user dont have any leave history"})
+        
+        return super().list(self, request, *args, **kwargs)
     
     # def get_objects(self):
     #     # breakpoint()
