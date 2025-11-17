@@ -20,7 +20,7 @@ class RegisterView(mixins.CreateModelMixin, viewsets.GenericViewSet):
 class LoginView(viewsets.ViewSet):
     @extend_schema(
             request=LoginSerializer,
-            responses=LoginSerializer, 
+            responses=LoginSerializer,              #-->not using model, so explicitly mentioning the extend_schema
             description="login schema"
     )
     @action(methods=["post"], detail=False,)
