@@ -17,7 +17,9 @@ class RegisterView(mixins.CreateModelMixin, viewsets.GenericViewSet):
     # permission_classes = [IsAdminUser]
     serializer_class = RegisterSerializer
 
-class LoginView(viewsets.ViewSet):
+class LoginView(viewsets.GenericViewSet):
+    serializer_class = LoginSerializer
+
     @extend_schema(
             request=LoginSerializer,
             responses=LoginSerializer,              #-->not using model, so explicitly mentioning the extend_schema
@@ -25,7 +27,8 @@ class LoginView(viewsets.ViewSet):
     )
     @action(methods=["post"], detail=False,)
     def get_tokens(self, request):
-        serializer = LoginSerializer(data = request.data)
+        # serializer = LoginSerializer(data = request.data)
+        serializer = self.get_serializer(data = request.data)
         serializer.is_valid(raise_exception=True)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
