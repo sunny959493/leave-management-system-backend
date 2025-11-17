@@ -13,7 +13,6 @@ router.register('leaveTracker', LeaveTrackerView, basename='leave-tracker')
 router.register('leaveRequest', LeaveRequestView, basename='leave-requests')
 router.register('register', RegisterView, basename='register')
 router.register('teamMembers', TeamMembersView, basename='team-members')
-# router.register('teamMembersLeaveTracker', TeamMembersLeaveTrackerView, basename='team-leave-trackers')
 router.register('login', LoginView, basename="login") #---> gives access & refresh tokens after login
 
 teamMembers_router = NestedDefaultRouter(router, 'teamMembers', lookup = 'user')
