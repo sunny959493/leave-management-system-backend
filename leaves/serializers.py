@@ -69,7 +69,6 @@ class RegisterSerializer(serializers.ModelSerializer):
         return user
     
 class LeaveTrackerSerializer(serializers.ModelSerializer):
-    leaves_left = serializers.IntegerField(read_only = True)
     class Meta:
         model = LeaveTracker
         fields = ['user', 'total_leaves', 'leaves_taken', 'leaves_left']
@@ -103,7 +102,7 @@ class LeaveRequestSerializer(serializers.ModelSerializer):
                 raise serializers.ValidationError("you dont have enough leaves to apply")
         return data
     
-    def create(self, validated_data):
+    def create(self, validated_data):  #--->user details is not sent, so over-writing create method.  
         start_date = validated_data['start_date']
         end_date = validated_data['end_date']
         reason = validated_data.get('reason')

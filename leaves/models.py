@@ -15,6 +15,7 @@ class LeaveTracker(models.Model):
     total_leaves = models.IntegerField(default=20)
     leaves_taken = models.IntegerField(default=0)
     
+    @property  #--> drf automatically detect it as a field instead of calling it like a method. No need of explicitly mentioning the filed in serializer. It will be read_only field automatically. It calculates the data every time.
     def leaves_left(self):
         return (self.total_leaves - self.leaves_taken)
     
