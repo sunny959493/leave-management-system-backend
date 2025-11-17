@@ -127,16 +127,27 @@ class TeamMembersView(mixins.ListModelMixin, mixins.RetrieveModelMixin, viewsets
 class TeamMembersLeaveTrackerView(mixins.ListModelMixin, viewsets.GenericViewSet):
     permission_classes = [IsAuthenticated] #same
     serializer_class = LeaveTrackerSerializer
-    filter_backends = [DjangoFilterBackend]
-    filterset_class = TeamLeaveTrackerCustomFilter
+    # filter_backends = [DjangoFilterBackend]
+    # filterset_class = TeamLeaveTrackerCustomFilter
 
     def get_queryset(self):
         user = self.request.user
         team_members = user.team_members.all()
-        team_members_ids = []
+        team_members_ids = []  #--> all team members of logged in user
         for member in team_members:
             team_members_ids.append(member.id)
-        return LeaveTracker.objects.filter(user__in = team_members_ids)
+        team_member_id = int(self.kwargs.get('user_pk')) #--> team member id from url
+        if team_member_id in team_members_ids:
+            return LeaveTracker.objects.filter(user = team_member_id)
+        else:
+            return LeaveTracker.objects.none()
+        
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        if queryset.count() == 0:
+            return Response({"message": "The entered user is not in your team."})
+        
+        return super().list(request, *args, **kwargs)
     
 class TeamMembersLeavesView(mixins.ListModelMixin, mixins.RetrieveModelMixin,viewsets.GenericViewSet):
     permission_classes = [IsAuthenticated] # same
