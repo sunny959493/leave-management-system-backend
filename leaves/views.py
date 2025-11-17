@@ -93,15 +93,11 @@ class LeaveApproveView(mixins.CreateModelMixin, viewsets.GenericViewSet):
         return queryset.get(id = leave_id)
     
     def create(self, request, **kwargs):
-        # breakpoint()
         pk = kwargs.get('leave_pk')
-        # breakpoint()
         serializer = self.get_serializer(data=request.data, context={"pk":pk, "request":request})
         serializer.is_valid(raise_exception=True)
-        # breakpoint()
         action = serializer.validated_data.get('action')
         leave_request = self.get_object()
-        # breakpoint()
         if action=='approve':
             leave_tracker = LeaveTracker.objects.get(user = leave_request.user)
             leave_request.status = 'approved'
@@ -151,20 +147,16 @@ class TeamMembersLeavesView(mixins.ListModelMixin, mixins.RetrieveModelMixin,vie
     pagination_class = CustomPagination
 
     def get_queryset(self):
-        # breakpoint()
         user = self.request.user
         team_members = user.team_members.all()
         team_members_id = []
-        for member in team_members:
+        for member in team_members:  #--> team memebers id's
             team_members_id.append(member.id)
         team_member_user_id = int(self.kwargs.get('user_pk')) #--->team member user_id
-        if team_member_user_id:
-            if team_member_user_id in team_members_id:
-                return LeaveRequest.objects.filter(user_id = team_member_user_id)
-            else:
-                # breakpoint()
-                return LeaveRequest.objects.none()
-        return LeaveRequest.objects.filter(user__in = team_members_id)
+        if team_member_user_id in team_members_id: #checking whether given user's id is in team members user id's
+            return LeaveRequest.objects.filter(user_id = team_member_user_id)
+        else:
+            return LeaveRequest.objects.none()
     
     def list(self, request, *args, **kwargs):
         queryset = self.get_queryset()
