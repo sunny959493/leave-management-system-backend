@@ -39,7 +39,7 @@ class Query(graphene.ObjectType):
     holidays = graphene.List(HolidayType) #-->get all holidays list
     leave_tracker = graphene.Field(LeaveTrackerType) #--> get leave tracker of user
     leave_request = graphene.List(LeaveRequestType, 
-                                  status=graphene.String(required=False)) #--> all leave requests of that user
+                                  status=graphene.String(required=False)) #--> all leave requests of that user, status as filter
     user = graphene.Field(UserType) #-->
     team_members_leaves = graphene.List(LeaveRequestType)
     team_members = graphene.List(UserType)
