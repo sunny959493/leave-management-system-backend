@@ -25,7 +25,7 @@ class LoginView(viewsets.GenericViewSet):
             responses=LoginSerializer,              #-->not using model, so explicitly mentioning the extend_schema
             description="login schema"
     )
-    @action(methods=["post"], detail=False,)
+    @action(methods=["post"], detail=False,) #-->to have custom endpoints fot 'methods' oprations
     def get_tokens(self, request):
         # serializer = LoginSerializer(data = request.data)
         serializer = self.get_serializer(data = request.data)
