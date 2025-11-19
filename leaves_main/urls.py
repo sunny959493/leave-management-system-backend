@@ -30,19 +30,6 @@ from drf_spectacular.views import (
     SpectacularRedocView,
 )
 
-# schema_view = get_schema_view(
-#     openapi.Info(
-#         title="My API",
-#         default_version='v1',
-#         description="API documentation",
-#         terms_of_service="https://www.google.com/policies/terms/",
-#         contact=openapi.Contact(email="contact@example.com"),
-#         license=openapi.License(name="BSD License"),
-#     ),
-#     public=True,
-#     permission_classes=(permissions.AllowAny,),
-# )
-
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/', include('leaves.urls')),

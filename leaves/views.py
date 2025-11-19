@@ -4,7 +4,7 @@ from rest_framework.response import Response
 from .models import Holiday, LeaveTracker, LeaveRequest, CustomUser
 from .serializers import (HolidaySerializer, LoginSerializer, RegisterSerializer, LeaveTrackerSerializer,
 LeaveRequestSerializer, UserSerializer, LeaveApproveSerializer)
-from rest_framework import status, mixins, generics, viewsets
+from rest_framework import status, mixins, viewsets
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework import filters
 from django_filters.rest_framework import DjangoFilterBackend
