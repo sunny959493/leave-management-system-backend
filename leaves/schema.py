@@ -227,17 +227,17 @@ class RefreshMutation(graphene.Mutation):
 
         # generate new tokens
         new_access = get_token(user)
-        new_refresh_obj = RefreshToken.objects.create(user=user)
+        new_refresh = RefreshToken.objects.create(user=user)
 
         # blacklist the old one (if rotation is enabled)
         refresh_obj.revoke()
 
-        return RefreshMutation(access=new_access, refresh=new_refresh_obj.token)
+        return RefreshMutation(access=new_access, refresh=new_refresh.token)
 
 class Mutation(graphene.ObjectType):
     login = LoginMutation.Field() #--> Generates access and refresh tokens.
     verify_token = graphql_jwt.Verify.Field() #--> To only verify the token and get payload of it.
-    refresh = RefreshMutation.Field()#-> Gives new access token
+    refresh = RefreshMutation.Field()#-> Gives new access token, refresh token and revokes the old refresh token
     leave_request = LeaveRequestMutation.Field()#-> apply leaves
     register = RegisterMutation.Field() #--> registering new user
     team_members_leaves_approve = LeaveApproveMutation.Field() #-->reporting manager approving leaves
