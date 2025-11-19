@@ -140,7 +140,7 @@ class TeamMembersLeaveTrackerView(mixins.ListModelMixin, viewsets.GenericViewSet
         if team_member_id in team_members_ids:
             return LeaveTracker.objects.filter(user = team_member_id)
         else:
-            return LeaveTracker.objects.none()
+            return LeaveTracker.objects.none() #-->entered user_pk is not in team members ids
         
     def list(self, request, *args, **kwargs):
         queryset = self.get_queryset()
