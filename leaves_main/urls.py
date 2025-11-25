@@ -20,10 +20,6 @@ from graphene_django.views import GraphQLView
 from leaves.schema import schema
 from django.views.decorators.csrf import csrf_exempt
 
-from drf_yasg.views import get_schema_view
-from drf_yasg import openapi
-from rest_framework import permissions
-
 from drf_spectacular.views import (
     SpectacularAPIView,
     SpectacularSwaggerView,
